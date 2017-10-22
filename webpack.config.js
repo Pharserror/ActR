@@ -1,5 +1,3 @@
-var path = require('path');
-
 module.exports = {
   context: __dirname, // we just want to use $cwd
   // entry is the file that renders our React app.

@@ -2,7 +2,7 @@
   "name": "ActN",
   "version": "0.0.1",
   "description": "An easy-to-use action creator for Redux",
-  "main": "actn.js",
+  "main": "dist/actn.js",
   "author": "Adam Lind <sunboxnet@gmail.com>",
   "license": "MIT",
   "homepage": "https://bitbucket.org/pharserror/wizrd#readme",
