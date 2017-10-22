@@ -1,0 +1,56 @@
+{
+  "name": "ActN",
+  "version": "0.0.1",
+  "description": "An easy-to-use action creator for Redux",
+  "main": "actn.js",
+  "author": "Adam Lind <sunboxnet@gmail.com>",
+  "license": "MIT",
+  "homepage": "https://bitbucket.org/pharserror/wizrd#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/pharserror/actn.git"
+  },
+  "keywords": [
+    "Action",
+    "Flux",
+    "React",
+    "Redux"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "test",
+    "tests"
+  ],
+  "engines": {
+    "node": "5.0.0"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "jest": {
+    "scriptPreprocessor": "<rootDir>/node_modules/babel-jest",
+    "testRegex": "/__tests__/",
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "es6"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/"
+    ]
+  },
+  "devDependencies": {
+    "babel-jest": "^20.0.3",
+    "jest-cli": "^20.0.4",
+    "webpack-dev-middleware": "1.12.0"
+  },
+  "dependencies": {
+    "babel-core": "6.26.0",
+    "babel-loader": "7.1.2",
+    "babel-preset-es2015": "6.24.1",
+    "babel-preset-react": "6.24.1",
+    "babel-preset-stage-0": "6.24.1",
+    "webpack": "^3.5.5"
+  }
+}
