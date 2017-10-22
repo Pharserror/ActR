@@ -1,6 +1,6 @@
 {
   "name": "ActN",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "An easy-to-use action creator for Redux",
   "main": "dist/actn.js",
   "author": "Adam Lind <sunboxnet@gmail.com>",
