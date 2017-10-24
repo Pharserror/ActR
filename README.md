@@ -24,26 +24,20 @@ where you may simply invoke action creation as such:
 
 Finally to dispatch actions with Redux you might have something like this:
 
-+=========================================================================+
-|-------------------------------- EXAMPLE --------------------------------|
-+=========================================================================+
-MyActions.js
-------------
 ```javascript
-  import ActionCreator from '/path/to/ActionCreator';
-  
-  export default new ActionCreator([
-    'myAction'
-  ]);
+// MyActions.js
+import ActionCreator from '/path/to/ActionCreator';
+
+export default new ActionCreator([
+  'myAction'
+]);
 ```
 
------------------
-UsingMyActions.js
------------------
 ```javascript
-  import MyActions from '/path/to/MyActions';
-  
-  dispatch(MyActions.myAction({ dataOrSomething: dataOrSomething }));
+// UsingMyActions.js
+import MyActions from '/path/to/MyActions';
+
+dispatch(MyActions.myAction({ dataOrSomething: dataOrSomething }));
 ```
 
 ### Caveats
