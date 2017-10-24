@@ -12,7 +12,7 @@ Since most Redux actions are the same in that they take the form of:
   }
 ```
 
-This class aims to simplify the creation of actions similar to that of Reflux
+This class aims to simplify the creation of actions similar to that of [Reflux](https://github.com/reflux/refluxjs#creating-actions)
 where you may simply invoke action creation as such:
 
 ```javascript
