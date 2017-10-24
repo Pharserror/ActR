@@ -10,7 +10,9 @@ module.exports = {
     path: __dirname + '/dist',
     // filename is the name of the output file that will be compiled by Webpack
     filename: '[name].js',
-    publicPath: '/'
+    publicPath: '/',
+    library: 'ActN',
+    libraryTarget: 'umd'
   },
   module: {
     // our loaders are our transpilers and interpreters such as Babel
