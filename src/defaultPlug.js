@@ -86,6 +86,9 @@ const defaultPlug = {
           })
         }
         case 'String': {
+          /* Should give us something like this:
+           * { myAction: options => ({ ...options, type: 'ON_MY_ACTION' })
+           */
           context[action] = options => ({
             ...options,
             type: types
@@ -93,14 +96,6 @@ const defaultPlug = {
         }
       }
     } else { throw 'You must supply action types!'; }
-
-    /* Finally we have a return value like:
-     * {
-     *   type:       'ON_MY_ACTION',
-     *   otherStuff: otherStuff
-     * }
-     * And we should be able to dispatch this action as myAction
-     */
   }
 }
 

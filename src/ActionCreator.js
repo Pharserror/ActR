@@ -4,7 +4,7 @@
  *
  * function myAction(stuff) {
  *   return {
- *     type: SOME_EVENT,
+ *     type: ON_MY_ACTION,
  *     stuff
  *   };
  * }
@@ -57,9 +57,13 @@ export default class ActionCreator {
          * Plugs are free to return an array, object, or string - they may opt
          * to then use either the built-in destructor or provide one themselves
          */
-        let types = options.plug ? options.plug(action) : defaultPlug.naming(action);
+        let types = (
+          options.plug && options.plug.naming
+          ? options.plug.naming(action)
+          : defaultPlug.naming(action)
+        );
 
-        options.destructor
+        options.plug && options.plug.destructor
         ? options.destructor(action, this, types)
         : (() => { defaultPlug.destructor(action, this, types); })();
       }, this);

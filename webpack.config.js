@@ -15,11 +15,11 @@ module.exports = {
   module: {
     // our loaders are our transpilers and interpreters such as Babel
     loaders: [{
-      test: /\.jsx?$/, // we tell babel to look for js and jsx files
+      test: /\.js$/, // we tell babel to look for js and jsx files
       exclude: /node_modules/, // we expect our node modules to already be transpiled
       loader: 'babel-loader',
       query: {
-        presets: ['react', 'es2015', 'stage-0'] // we need to use this preset so that Babel doesn't choke on JSX syntax
+        presets: ['es2015', 'stage-0'] // we need to use this preset so that Babel doesn't choke on JSX syntax
       }
     }, {
       test: /\.s?css$/,
@@ -27,6 +27,6 @@ module.exports = {
     }]
   },
   resolve: {
-    extensions: ['.js', '.jsx']
+    extensions: ['.js']
   }
 };
