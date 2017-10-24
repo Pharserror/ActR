@@ -249,6 +249,7 @@ var defaultPlug = {
                 });
               });
             });
+            break;
           }
         case 'Object':
           {
@@ -265,12 +266,14 @@ var defaultPlug = {
              * actions.myAction.SUCCESS(options);
              */
             Object.keys(types).map(function (type) {
-              context[action] = _defineProperty({}, type, function (options) {
+              context[action] = _extends({}, context[action] || {}, _defineProperty({}, type, function () {
+                var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
                 return _extends({}, options, {
                   type: types[type]
                 });
-              });
+              }));
             });
+            break;
           }
         case 'String':
           {
@@ -282,6 +285,7 @@ var defaultPlug = {
                 type: types
               });
             };
+            break;
           }
       }
     } else {

@@ -61,7 +61,8 @@ const defaultPlug = {
                 type
               }))
             };
-          })
+          });
+          break;
         }
         case 'Object': {
           /* In this case our types should be something like:
@@ -78,12 +79,14 @@ const defaultPlug = {
            */
           Object.keys(types).map(type => {
             context[action] = {
-              [type]: options => ({
+              ...(context[action] || {}),
+              [type]: (options = {}) => ({
                 ...options,
                 type: types[type]
               })
             };
-          })
+          });
+          break;
         }
         case 'String': {
           /* Should give us something like this:
@@ -92,7 +95,8 @@ const defaultPlug = {
           context[action] = options => ({
             ...options,
             type: types
-          })
+          });
+          break;
         }
       }
     } else { throw 'You must supply action types!'; }
