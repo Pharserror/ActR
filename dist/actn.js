@@ -93,7 +93,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                                                                                                                                                            *
                                                                                                                                                            * function myAction(stuff) {
                                                                                                                                                            *   return {
-                                                                                                                                                           *     type: SOME_EVENT,
+                                                                                                                                                           *     type: ON_MY_ACTION,
                                                                                                                                                            *     stuff
                                                                                                                                                            *   };
                                                                                                                                                            * }
@@ -151,9 +151,9 @@ var ActionCreator = function ActionCreator(actions) {
        * Plugs are free to return an array, object, or string - they may opt
        * to then use either the built-in destructor or provide one themselves
        */
-      var types = options.plug ? options.plug(action) : _defaultPlug2.default.naming(action);
+      var types = options.plug && options.plug.naming ? options.plug.naming(action) : _defaultPlug2.default.naming(action);
 
-      options.destructor ? options.destructor(action, _this, types) : function () {
+      options.plug && options.plug.destructor ? options.destructor(action, _this, types) : function () {
         _defaultPlug2.default.destructor(action, _this, types);
       }();
     }, this);
@@ -264,6 +264,9 @@ var defaultPlug = {
           }
         case 'String':
           {
+            /* Should give us something like this:
+             * { myAction: options => ({ ...options, type: 'ON_MY_ACTION' })
+             */
             context[action] = function (options) {
               return _extends({}, options, {
                 type: types
@@ -274,14 +277,6 @@ var defaultPlug = {
     } else {
       throw 'You must supply action types!';
     }
-
-    /* Finally we have a return value like:
-     * {
-     *   type:       'ON_MY_ACTION',
-     *   otherStuff: otherStuff
-     * }
-     * And we should be able to dispatch this action as myAction
-     */
   }
 };
 
