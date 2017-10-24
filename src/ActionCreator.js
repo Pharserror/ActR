@@ -37,71 +37,31 @@
  *
  * dispatch(MyActions.myAction({ dataOrSomething: dataOrSomething }));
  *
- * NOTE: You MUST supply data to an action as an object so that when it reaches
+ * NOTE: You MUST supply data to an action AS AN OBJECT so that when it reaches
  *       the reducer you can access it as action.myKey where myKey is the key
  *       in the object supplied to the action that points to the data
  *
  */
+import defaultPlug from './defaultPlug';
 
 export default class ActionCreator {
-  constructor(actions) {
+  constructor(actions, options = {}) {
     // Actions needs to be an array of strings
     if (actions.constructor.name !== 'Array') {
-      throw "You must supply an array of actions to ActionCreator!";
+      throw 'You must supply an array of actions to ActionCreator!';
     } else {
-      actions.forEach((action) => {
-        // If the action is not a string then we throw an error
-        if (action.constructor.name !== 'String') {
-          throw "Every action supplied to ActionCreator must be a string!";
-        }
-        // All actions should be in the format of "ON_SOME_EVENT"
-        let actionEventName = "ON";
-        // We create some space to store the indexes of each capital character
-        let indexes = [];
-        // We look through the string and find and store the index of capital characters
-        action.replace(/[A-Z]/g, (match, index, actionName) => {
-          indexes.push(index);
-        });
-        // If there are no capital characters then we just capitalize the whole string
-        if (indexes[0] === undefined) {
-          actionEventName += '_' + action.toUpperCase();
-        } else {
-          /* Otherwise we capitalize the first part of an action like myAction
-           * so that we get "_MY" */
-          actionEventName += '_' + action.substr(0, indexes[0]).toUpperCase();
-          /* Then for each index we found above we capitalize that part of the
-           * string to "_ACTION" */
-          indexes.forEach((index, i) => {
-            /* We want to check if we have reached the end of the string so that
-             * we may properly calculate the length of the substr */
-            let length = indexes[i + 1] === undefined
-                         ? action.length - index
-                         : indexes[i + 1] - index;
-            actionEventName += '_' + action.substr(index, length).toUpperCase();
-          });
-          // We should now have an actionEventName like "ON_MY_ACTION"
-        }
-        this[action] = (options) => {
-          let prop;
-          let returnValue = { type: actionEventName };
-          if (!!options) {
-            if (options.constructor.name !== 'Object') {
-              throw "You must supply arguments to an action as an object!";
-            }
-            // For every prop in options we add it to the return value
-            for (prop in options) {
-              returnValue[prop] = options[prop];
-            }
-          }
-          /* Finally we have a return value like:
-           * {
-           *   type: "ON_MY_ACTION",
-           *   otherStuff: otherStuff
-           * }
-           * And we should be able to dispatch this action as myAction
-           */
-          return returnValue;
-        };
+      actions.forEach(action => {
+        /* For each action we pass it to a plugin for naming in-case the user
+         * has their own scheme they would rather use than the default
+         *
+         * Plugs are free to return an array, object, or string - they may opt
+         * to then use either the built-in destructor or provide one themselves
+         */
+        let types = options.plug ? options.plug(action) : defaultPlug.naming(action);
+
+        options.destructor
+        ? options.destructor(action, this, types)
+        : (() => { defaultPlug.destructor(action, this, types); })();
       }, this);
     }
   }

@@ -81,118 +81,211 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var _defaultPlug = __webpack_require__(2);
 
-/* ACTION CREATOR FOR REDUX ACTIONS
- *
- * Since most Redux actions are the same in that they take the form of:
- *
- * function myAction(stuff) {
- *   return {
- *     type: SOME_EVENT,
- *     stuff
- *   };
- * }
- *
- * This class aims to simplify the creation of actions similar to that of Reflux
- * where you may simply invoke action creation as such:
- *
- * export default new ActionCreator([
- *   'action1',
- *   ...
- * ]);
- *
- * Finally to dispatch actions with Redux you might have something like this:
- *
- * +=========================================================================+
- * |-------------------------------- EXAMPLE --------------------------------|
- * +=========================================================================+
- * MyActions.js
- * ------------
- * import ActionCreator from '/path/to/ActionCreator';
- *
- * export default new ActionCreator([
- *   'myAction'
- * ]);
- *
- * -----------------
- * UsingMyActions.js
- * -----------------
- * import MyActions from '/path/to/MyActions';
- *
- * dispatch(MyActions.myAction({ dataOrSomething: dataOrSomething }));
- *
- * NOTE: You MUST supply data to an action as an object so that when it reaches
- *       the reducer you can access it as action.myKey where myKey is the key
- *       in the object supplied to the action that points to the data
- *
- */
+var _defaultPlug2 = _interopRequireDefault(_defaultPlug);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } } /* ACTION CREATOR FOR REDUX ACTIONS
+                                                                                                                                                           *
+                                                                                                                                                           * Since most Redux actions are the same in that they take the form of:
+                                                                                                                                                           *
+                                                                                                                                                           * function myAction(stuff) {
+                                                                                                                                                           *   return {
+                                                                                                                                                           *     type: SOME_EVENT,
+                                                                                                                                                           *     stuff
+                                                                                                                                                           *   };
+                                                                                                                                                           * }
+                                                                                                                                                           *
+                                                                                                                                                           * This class aims to simplify the creation of actions similar to that of Reflux
+                                                                                                                                                           * where you may simply invoke action creation as such:
+                                                                                                                                                           *
+                                                                                                                                                           * export default new ActionCreator([
+                                                                                                                                                           *   'action1',
+                                                                                                                                                           *   ...
+                                                                                                                                                           * ]);
+                                                                                                                                                           *
+                                                                                                                                                           * Finally to dispatch actions with Redux you might have something like this:
+                                                                                                                                                           *
+                                                                                                                                                           * +=========================================================================+
+                                                                                                                                                           * |-------------------------------- EXAMPLE --------------------------------|
+                                                                                                                                                           * +=========================================================================+
+                                                                                                                                                           * MyActions.js
+                                                                                                                                                           * ------------
+                                                                                                                                                           * import ActionCreator from '/path/to/ActionCreator';
+                                                                                                                                                           *
+                                                                                                                                                           * export default new ActionCreator([
+                                                                                                                                                           *   'myAction'
+                                                                                                                                                           * ]);
+                                                                                                                                                           *
+                                                                                                                                                           * -----------------
+                                                                                                                                                           * UsingMyActions.js
+                                                                                                                                                           * -----------------
+                                                                                                                                                           * import MyActions from '/path/to/MyActions';
+                                                                                                                                                           *
+                                                                                                                                                           * dispatch(MyActions.myAction({ dataOrSomething: dataOrSomething }));
+                                                                                                                                                           *
+                                                                                                                                                           * NOTE: You MUST supply data to an action AS AN OBJECT so that when it reaches
+                                                                                                                                                           *       the reducer you can access it as action.myKey where myKey is the key
+                                                                                                                                                           *       in the object supplied to the action that points to the data
+                                                                                                                                                           *
+                                                                                                                                                           */
+
 
 var ActionCreator = function ActionCreator(actions) {
   var _this = this;
+
+  var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
   _classCallCheck(this, ActionCreator);
 
   // Actions needs to be an array of strings
   if (actions.constructor.name !== 'Array') {
-    throw "You must supply an array of actions to ActionCreator!";
+    throw 'You must supply an array of actions to ActionCreator!';
   } else {
     actions.forEach(function (action) {
-      // If the action is not a string then we throw an error
-      if (action.constructor.name !== 'String') {
-        throw "Every action supplied to ActionCreator must be a string!";
-      }
-      // All actions should be in the format of "ON_SOME_EVENT"
-      var actionEventName = "ON";
-      // We create some space to store the indexes of each capital character
-      var indexes = [];
-      // We look through the string and find and store the index of capital characters
-      action.replace(/[A-Z]/g, function (match, index, actionName) {
-        indexes.push(index);
-      });
-      // If there are no capital characters then we just capitalize the whole string
-      if (indexes[0] === undefined) {
-        actionEventName += '_' + action.toUpperCase();
-      } else {
-        /* Otherwise we capitalize the first part of an action like myAction
-         * so that we get "_MY" */
-        actionEventName += '_' + action.substr(0, indexes[0]).toUpperCase();
-        /* Then for each index we found above we capitalize that part of the
-         * string to "_ACTION" */
-        indexes.forEach(function (index, i) {
-          /* We want to check if we have reached the end of the string so that
-           * we may properly calculate the length of the substr */
-          var length = indexes[i + 1] === undefined ? action.length - index : indexes[i + 1] - index;
-          actionEventName += '_' + action.substr(index, length).toUpperCase();
-        });
-        // We should now have an actionEventName like "ON_MY_ACTION"
-      }
-      _this[action] = function (options) {
-        var prop = void 0;
-        var returnValue = { type: actionEventName };
-        if (!!options) {
-          if (options.constructor.name !== 'Object') {
-            throw "You must supply arguments to an action as an object!";
-          }
-          // For every prop in options we add it to the return value
-          for (prop in options) {
-            returnValue[prop] = options[prop];
-          }
-        }
-        /* Finally we have a return value like:
-         * {
-         *   type: "ON_MY_ACTION",
-         *   otherStuff: otherStuff
-         * }
-         * And we should be able to dispatch this action as myAction
-         */
-        return returnValue;
-      };
+      /* For each action we pass it to a plugin for naming in-case the user
+       * has their own scheme they would rather use than the default
+       *
+       * Plugs are free to return an array, object, or string - they may opt
+       * to then use either the built-in destructor or provide one themselves
+       */
+      var types = options.plug ? options.plug(action) : _defaultPlug2.default.naming(action);
+
+      options.destructor ? options.destructor(action, _this, types) : function () {
+        _defaultPlug2.default.destructor(action, _this, types);
+      }();
     }, this);
   }
 };
 
 exports.default = ActionCreator;
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var defaultPlug = {
+  naming: function naming(action) {
+    // If the action is not a string then we throw an error
+    if (action.constructor.name !== 'String') {
+      throw 'Every action supplied to ActionCreator must be a string!';
+    }
+    // All actions should be in the format of "ON_SOME_EVENT"
+    var actionEventName = 'ON';
+    // We create some space to store the indexes of each capital character
+    var indexes = [];
+    // We look through the string and find and store the index of capital characters
+    action.replace(/[A-Z]/g, function (match, index, actionName) {
+      indexes.push(index);
+    });
+    // If there are no capital characters then we just capitalize the whole string
+    if (indexes[0] === undefined) {
+      actionEventName += '_' + action.toUpperCase();
+    } else {
+      /* Otherwise we capitalize the first part of an action like myAction
+        * so that we get "_MY" */
+      actionEventName += '_' + action.substr(0, indexes[0]).toUpperCase();
+      /* Then for each index we found above we capitalize that part of the
+        * string to "_ACTION" */
+      indexes.forEach(function (index, i) {
+        /* We want to check if we have reached the end of the string so that
+          * we may properly calculate the length of the substr */
+        var length = indexes[i + 1] === undefined ? action.length - index : indexes[i + 1] - index;
+        actionEventName += '_' + action.substr(index, length).toUpperCase();
+      });
+      // We should now have an actionEventName like "ON_MY_ACTION"
+    }
+
+    return actionEventName;
+  },
+  /* destructor()
+   *
+   * @param action [String] A string like 'myAction'
+   *
+   * @param context [Function] this
+   *
+   * @param types [Any] Could be an Array, Object, or String
+   *
+   * @returns [null]
+   */
+  destructor: function destructor(action, context, types) {
+    if (!!types) {
+      switch (types.constructor.name) {
+        case 'Array':
+          {
+            /* In this case our types are something like:
+             * ['action1', 'action2', ...]
+             *
+             * And we want to return something like:
+             * { action1: options => { ...options, type: 'action1' } }
+             */
+            types.map(function (type) {
+              context[action] = _defineProperty({}, type, function (options) {
+                return _extends({}, options, {
+                  type: type
+                });
+              });
+            });
+          }
+        case 'Object':
+          {
+            /* In this case our types should be something like:
+             * {
+             *   FAILURE: 'my-action/FAILURE',
+             *   SUCCESS: 'my-action/SUCCESS'
+             * }
+             *
+             * And we will return something like this:
+             * { SUCCESS: options => { ...options, type: 'my-action/SUCCESS' } }
+             *
+             * And then it may be called like this:
+             * actions.myAction.SUCCESS(options);
+             */
+            Object.keys(types).map(function (type) {
+              context[action] = _defineProperty({}, type, function (options) {
+                return _extends({}, options, {
+                  type: types[type]
+                });
+              });
+            });
+          }
+        case 'String':
+          {
+            context[action] = function (options) {
+              return _extends({}, options, {
+                type: types
+              });
+            };
+          }
+      }
+    } else {
+      throw 'You must supply action types!';
+    }
+
+    /* Finally we have a return value like:
+     * {
+     *   type:       'ON_MY_ACTION',
+     *   otherStuff: otherStuff
+     * }
+     * And we should be able to dispatch this action as myAction
+     */
+  }
+};
+
+exports.default = defaultPlug;
 
 /***/ })
 /******/ ]);
