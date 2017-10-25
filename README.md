@@ -1,4 +1,4 @@
-# ActN
+# ActR
 A Redux Action creator
 
 Since most Redux actions are the same in that they take the form of:

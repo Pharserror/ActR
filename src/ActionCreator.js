@@ -1,50 +1,18 @@
-/* ACTION CREATOR FOR REDUX ACTIONS
- *
- * Since most Redux actions are the same in that they take the form of:
- *
- * function myAction(stuff) {
- *   return {
- *     type: ON_MY_ACTION,
- *     stuff
- *   };
- * }
- *
- * This class aims to simplify the creation of actions similar to that of Reflux
- * where you may simply invoke action creation as such:
- *
- * export default new ActionCreator([
- *   'action1',
- *   ...
- * ]);
- *
- * Finally to dispatch actions with Redux you might have something like this:
- *
- * +=========================================================================+
- * |-------------------------------- EXAMPLE --------------------------------|
- * +=========================================================================+
- * MyActions.js
- * ------------
- * import ActionCreator from '/path/to/ActionCreator';
- *
- * export default new ActionCreator([
- *   'myAction'
- * ]);
- *
- * -----------------
- * UsingMyActions.js
- * -----------------
- * import MyActions from '/path/to/MyActions';
- *
- * dispatch(MyActions.myAction({ dataOrSomething: dataOrSomething }));
- *
- * NOTE: You MUST supply data to an action AS AN OBJECT so that when it reaches
- *       the reducer you can access it as action.myKey where myKey is the key
- *       in the object supplied to the action that points to the data
- *
- */
 import defaultPlug from './defaultPlug';
 
+/* ActionCreator
+ *
+ * Docs have moved to the README.md
+ */
 export default class ActionCreator {
+  /* constructor()
+   *
+   * @param actions [Array] An array of strings to be used for action names
+   *
+   * @param options [Object] Any plugins to be used should be passed as { plug: MyPlug }
+   *
+   * @returns [ActionCreator]
+   */
   constructor(actions, options = {}) {
     // Actions needs to be an array of strings
     if (actions.constructor.name !== 'Array') {

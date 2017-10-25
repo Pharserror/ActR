@@ -2,7 +2,7 @@ module.exports = {
   context: __dirname, // we just want to use $cwd
   // entry is the file that renders our React app.
   entry: {
-    actn: [
+    actr: [
       './src/ActionCreator.js'
     ]
   },
@@ -11,7 +11,7 @@ module.exports = {
     // filename is the name of the output file that will be compiled by Webpack
     filename: '[name].js',
     publicPath: '/',
-    library: 'ActN',
+    library: 'ActR',
     libraryTarget: 'umd'
   },
   module: {
