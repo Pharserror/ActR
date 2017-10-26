@@ -27,7 +27,7 @@ describe('ActionCreator', () => {
       );
     })
 
-    test.only('it creates an action with the right keys', () => {
+    test('it creates an action with the right keys', () => {
       expect(subject['my-action'].SUCCESS()).toEqual({ type: 'my-action/SUCCESS' });
     })
   })
