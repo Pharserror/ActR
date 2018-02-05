@@ -130,7 +130,7 @@ function ActionCreator(actions) {
        * Plugs are free to return an array, object, or string - they may opt
        * to then use either the built-in destructor or provide one themselves
        */
-      var types = options.plug && options.plug.naming ? options.plug.naming(action) : _defaultPlug2.default.naming(action);
+      var types = options.plug && options.plug.naming ? options.plug.naming(action, options.plugOptions) : _defaultPlug2.default.naming(action);
 
       options.plug && options.plug.destructor ? options.destructor(action, _this, types) : function () {
         _defaultPlug2.default.destructor(action, _this, types);

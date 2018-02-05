@@ -27,7 +27,7 @@ export default class ActionCreator {
          */
         let types = (
           options.plug && options.plug.naming
-          ? options.plug.naming(action)
+          ? options.plug.naming(action, options.plugOptions)
           : defaultPlug.naming(action)
         );
 
