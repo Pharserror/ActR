@@ -1,6 +1,6 @@
 {
   "name": "ActR",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "An easy-to-use action creator for Redux",
   "main": "dist/actr.js",
   "author": "Adam Lind <sunboxnet@gmail.com>",
@@ -22,9 +22,6 @@
     "test",
     "tests"
   ],
-  "engines": {
-    "node": "5.0.0"
-  },
   "scripts": {
     "test": "jest"
   },
